@@ -10,6 +10,11 @@ namespace OceanDemo
     {
         static void Main(string[] args)
         {
+            Ocean ocean = new Ocean(10, 25, 250, -10, 10, 10);
+            ocean.InitCells();
+
+
+            Console.ReadKey();
 
         }
 

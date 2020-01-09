@@ -43,8 +43,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BL.cs" />
     <Compile Include="Cell.cs" />
+    <Compile Include="Enum\Direction.cs" />
+    <Compile Include="Enum\Constant.cs" />
     <Compile Include="Coordinate.cs" />
+    <Compile Include="Enum\Images.cs" />
+    <Compile Include="Obstacle.cs" />
+    <Compile Include="Ocean.cs" />
+    <Compile Include="Predator.cs" />
+    <Compile Include="Prey.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

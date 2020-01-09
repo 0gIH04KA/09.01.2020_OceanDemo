@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace OceanDemo
 {
+#pragma warning disable CS0659, CS0660, CS0661 
     class Coordinate
+#pragma warning restore CS0659, CS0660 , CS0661
+
     {
         #region ---===   Private   ===--- 
 
@@ -61,6 +64,12 @@ namespace OceanDemo
             Y = y;
         }
 
+        public Coordinate()
+            : this(0, 0)
+        {
+
+        }
+
         public Coordinate(Coordinate cord)
             : this(cord._x, cord._y)
         {
@@ -68,5 +77,20 @@ namespace OceanDemo
         }
 
         #endregion
+
+        #region ---===   Override Operator   ===---
+
+        public static bool operator ==(Coordinate cord1, Coordinate cord2)
+        {
+            return cord1.X == cord2.X && cord1.Y == cord2.Y;
+        }
+
+        public static bool operator !=(Coordinate cord1, Coordinate cord2)
+        {
+            return !(cord1 == cord2);
+        }
+
+        #endregion
+
     }
 }
