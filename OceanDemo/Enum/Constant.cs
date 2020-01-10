@@ -13,24 +13,112 @@ namespace OceanDemo
     /// </summary>
     class Constant
     {
-        public const int MAX_PREYS = 150;
-        public const int MAX_PREDATORS = 20;
-        public const int MAX_OBSTACLES = 75;
-       
-        public const int MAX_COLS = 70;
-        public const int MAX_ROWS = 25;
-
-        #region MyRegion
+        #region  ---===   Public Const   ===---
 
         public const int TIME_TO_REPRODUCE = 6;
         public const int TIME_TO_EAT = 6;
 
         #endregion
 
-        public const int MAX_NEIHGB_COUNT = 4;
-        
+        #region ---===   Private   ===---
 
-        public const int MAX_ITERATIONS = 50;
+        private const int MAX_PREYS = 150;
+        private const int MAX_PREDATORS = 20;
+        private const int MAX_OBSTACLES = 75;
+
+        private const int MAX_COLS = 70;
+        private const int MAX_ROWS = 25;
+
+        private const int MIN_ITERATIONS = 10;
+        private const int MAX_ITERATIONS = 100;
+
+        private const int NUM_DIRECTIONS = 4;
+
+        #endregion
+
+        #region ---===   Get / Set   ===---
+
+        public static int MaxPreys
+        {
+            get
+            {
+                return MAX_PREYS;
+            }
+        }
+
+        public static int MaxPredators
+        {
+            get
+            {
+                return MAX_PREDATORS;
+            }
+        }
+
+        public static int MaxObstacle
+        {
+            get
+            {
+                return MAX_OBSTACLES;
+            }
+        }
+
+        public static int MaxCols
+        {
+            get
+            {
+                return MAX_COLS;
+            }
+        }
+
+        public static int MaxRows
+        {
+            get
+            {
+                return MAX_ROWS;
+            }
+        }
+
+        public static int TimeToReproduce
+        {
+            get
+            {
+                return TIME_TO_REPRODUCE;
+            }
+        }
+
+        public static int TimeToEat
+        {
+            get
+            {
+                return TIME_TO_EAT;
+            }
+        }
+
+        public static int MinIteration
+        {
+            get
+            {
+                return MIN_ITERATIONS;
+            }
+        }
+
+        public static int MaxIteration
+        {
+            get
+            {
+                return MAX_ITERATIONS;
+            }
+        }
+
+        public static int NumDirection
+        {
+            get
+            {
+                return NUM_DIRECTIONS;
+            }
+        }
+
+        #endregion
 
     }
 }

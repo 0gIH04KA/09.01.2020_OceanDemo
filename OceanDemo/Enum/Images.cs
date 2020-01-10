@@ -11,9 +11,7 @@ namespace OceanDemo
         Empty = ' ',
 
         Prey = 'f',
-        Predators = 's',
+        Predators = 'S',
         Obstacle = '#',
-        
-       
     }
 }

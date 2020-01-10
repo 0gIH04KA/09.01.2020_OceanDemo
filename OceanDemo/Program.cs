@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Threading;
 
 namespace OceanDemo
 {
@@ -10,13 +11,19 @@ namespace OceanDemo
     {
         static void Main(string[] args)
         {
-            Ocean ocean = new Ocean(10, 25, 250, -10, 10, 10);
-            ocean.InitCells();
+            OceanUI oceanUI = new OceanUI();
+            Ocean ocean = OceanTest.CreateOcean(20, 20, 20, 20, 10, 100);
 
+            while (ocean.Run())
+            {
+                oceanUI.DisplayCells(ocean);
+               
+
+
+                Thread.Sleep(2000);
+            }
 
             Console.ReadKey();
-
         }
-
     }
 }

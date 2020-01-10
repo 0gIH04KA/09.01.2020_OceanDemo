@@ -8,6 +8,8 @@ namespace OceanDemo
 {
     class Cell
     {
+        public static Random _random;
+
         #region ---===   Protected   ===---
 
         protected readonly Ocean _ocean;
@@ -37,6 +39,11 @@ namespace OceanDemo
 
         public Cell(Coordinate coord)
         {
+            if (_random == null)
+            {
+                _random = new Random();
+            }
+
             _offset = coord;
         }
 
@@ -55,38 +62,43 @@ namespace OceanDemo
 
         #region ---===   Methods   ===---
 
-        #region ---===   Virtual   ===---
+            #region ---===   Virtual   ===---
 
-        public virtual Images Image
-        {
-            get
+            public virtual void Process()
             {
-                return _image;
+                throw new Exception("Class Cell !!");
             }
-        }
+
+            public virtual Images Image
+            {
+                get
+                {
+                    return _image;
+                }
+            }
+
+            public virtual Cell GetClone()
+            {
+                return new Cell(this);
+            }
+
+            public virtual object Clone()
+            {
+                return new Cell(this);
+            }
+
+            #endregion
+
+            #region ---===   Override Method   ===---
+
+            public override string ToString()
+            {
+                return ((char)_image).ToString();
+            }
+
+            #endregion
 
         #endregion
-
-        #region ---===   Abstract?   ===---
-
-        public virtual void Process()
-        {
-            throw new Exception();
-        }
-
-        #endregion
-
-        #endregion
-
-        public override string ToString()
-        {
-            return ((char)_image).ToString();
-        }
-
-
-
-
-
 
     }
 }

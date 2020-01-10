@@ -34,9 +34,9 @@ namespace OceanDemo
             }
             set
             {
-                if (value < 0 || value > Constant.MAX_ROWS)
+                if (value < 0 || value > Constant.MaxRows)
                 {
-                    _numRows = Constant.MAX_ROWS;
+                    _numRows = Constant.MaxRows;
 
                     return;
                 }
@@ -53,9 +53,9 @@ namespace OceanDemo
             }
             set
             {
-                if (value < 0 || value > Constant.MAX_COLS)
+                if (value < 0 || value > Constant.MaxCols)
                 {
-                    _numCols = Constant.MAX_COLS;
+                    _numCols = Constant.MaxCols;
 
                     return;
                 }
@@ -72,9 +72,9 @@ namespace OceanDemo
             }
             set
             {
-                if (value < 0 || value > Constant.MAX_PREYS)
+                if (value < 0 || value > Constant.MaxPreys)
                 {
-                    _numPrey = Constant.MAX_PREYS;
+                    _numPrey = Constant.MaxPreys;
 
                     return;
                 }
@@ -91,9 +91,9 @@ namespace OceanDemo
             }
             set
             {
-                if (value < 0 || value > Constant.MAX_PREDATORS)
+                if (value < 0 || value > Constant.MaxPredators)
                 {
-                    _numPredators = Constant.MAX_PREDATORS;
+                    _numPredators = Constant.MaxPredators;
 
                     return;
                 }
@@ -110,9 +110,9 @@ namespace OceanDemo
             }
             set
             {
-                if (value < 0 || value > Constant.MAX_OBSTACLES)
+                if (value < 0 || value > Constant.MaxObstacle)
                 {
-                    _numObstecles = Constant.MAX_OBSTACLES;
+                    _numObstecles = Constant.MaxObstacle;
 
                     return;
                 }
@@ -275,53 +275,171 @@ namespace OceanDemo
         #endregion
 
         #region ---===   Methods   ===---
-
-        public void InitCells()
+       
+        public Coordinate[] GetNeighborsWithImage(Coordinate c, Images image)
         {
-            AddEmptyCells();
-            //AddPrey();
-            //AddObctacles();
+            Coordinate[] neighbors = new Coordinate[Constant.NumDirection];
+            byte count = 0;
+
+            if (!IsEmptyCoordinate(this[c, Direction.Up])
+                && this[this[c, Direction.Up]].Image == image)
+            {
+                neighbors[count++] = this[c, Direction.Up];
+            }
+
+            if (!IsEmptyCoordinate(this[c, Direction.Down])
+                && this[this[c, Direction.Down]].Image == image)
+            {
+                neighbors[count++] = this[c, Direction.Down];
+            }
+
+            if (!IsEmptyCoordinate(this[c, Direction.Left])
+                && this[this[c, Direction.Left]].Image == image)
+            {
+                neighbors[count++] = this[c, Direction.Left];
+            }
+
+            if (!IsEmptyCoordinate(this[c, Direction.Right])
+                && this[this[c, Direction.Right]].Image == image)
+            {
+                neighbors[count++] = this[c, Direction.Right];
+            }
+
+            Coordinate[] resNeighbors;
+            if (count == 0)
+            {
+                resNeighbors = new Coordinate[1];
+                resNeighbors[count] = c;
+            }
+            else
+            {
+                resNeighbors = new Coordinate[count];
+                Array.Copy(neighbors, 0, resNeighbors, 0, count);
+            }
+
+            return resNeighbors;
         }
 
-        private void AddEmptyCells()
+        public Coordinate[] GetNeighborsEmpty(Coordinate cord)
         {
-            for (int row = 0; row < _numRows; row++)
+            Coordinate[] neighbors = new Coordinate[Constant.NumDirection];
+            int count = 0;
+
+            if (this[this[cord, Direction.Up]] == null)
             {
-                for (int col = 0; col < _numCols; col++)
+                neighbors[count++] = this[cord, Direction.Up];
+            }
+
+            if (this[this[cord, Direction.Down]] == null)
+            {
+                neighbors[count++] = this[cord, Direction.Down];
+            }
+
+            if (this[this[cord, Direction.Left]] == null)
+            {
+                neighbors[count++] = this[cord, Direction.Left];
+            }
+
+            if (this[this[cord, Direction.Right]] == null)
+            {
+                neighbors[count++] = this[cord, Direction.Right];
+            }
+
+            Coordinate[] resNeighbors;
+
+            if (count == 0)
+            {
+                resNeighbors = new Coordinate[1];
+                resNeighbors[count] = cord;
+            }
+            else
+            {
+                resNeighbors = new Coordinate[count];
+                Array.Copy(neighbors, 0, resNeighbors, 0, count - 1);
+            }
+
+            return resNeighbors;
+        }
+
+        public bool AddCell(Cell newCell)
+        {
+            bool res = false;
+
+            if (IsBoundedCoordinate(newCell.Offset) 
+                && IsEmptyCoordinate(newCell.Offset))
+            {
+                this[newCell.Offset] = newCell.GetClone();
+                res = true;
+            }
+
+            return res;
+        }
+
+        public bool IsBoundedCoordinate(Coordinate cord)
+        {
+            return ((cord.Y >= 0 && cord.Y < _cells.GetLength(0))
+                 && (cord.X >= 0 && cord.X < _cells.GetLength(1)));
+        }
+
+        public bool IsEmptyCoordinate(Coordinate cord)
+        {
+            return (_cells[cord.Y, cord.X] == null);
+        }
+
+        public void MoveFrom(Coordinate from, Coordinate to)
+        {
+            Cell temp = this[from];
+            temp.Offset = to;
+
+            this[from] = null;
+            this[to] = temp;
+        }
+
+        public bool Run()
+        {
+            if (--_numIterations > 0 
+                && (GetCountItems(Images.Prey) > 0 
+                || GetCountItems(Images.Predators) > 0))
+            {
+                for (ushort row = 0; row < _numRows; row++)
                 {
-                    _cells[row, col] = new Cell(new Coordinate(col, row), this);
+                    for (ushort col = 0; col < _numCols; col++)
+                    {
+                        if (_cells[row, col] != null)
+                        {
+                            _cells[row, col].Process();
+                        }
+                    }
                 }
+
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
 
-        //public void AddPrey()
-        //{
-        //    Coordinate empty;
+        public int GetCountItems(Images images)
+        {
+            int count = 0;
 
-        //    for (int i = 0; i < _numPrey; i++)
-        //    {
-        //        empty = GetEmptyCellCoord();
-        //        _cells[empty.Y, empty.X] = new Prey(empty, this); //Создаем добычу и цепляем к нему океан
-        //    }
-        //}
+            for (int row = 0; row < _cells.GetLength(0); row++)
+            {
+                for (int col = 0; col < _cells.GetLength(1); col++)
+                {
+                    if (_cells[row, col] != null 
+                        && _cells[row, col].Image == images)
+                    {
+                        ++count;
+                    }
+                }
+            }
 
-        //public void AddObctacles()
-        //{
-        //    Coordinate empty;
-
-        //    for (int i = 0; i < _numObstecles; i++)
-        //    {
-        //        empty = GetEmptyCellCoord();
-        //        _cells[empty.Y, empty.X] = new Obstacle(empty, this); //Создаем препятствия и цепляем к нему океан
-        //    }
-        //}
+            return count;
+        }
 
         #endregion
-
-
-
-
-
 
     }
 }

@@ -82,7 +82,7 @@ namespace OceanDemo
 
         public static bool operator ==(Coordinate cord1, Coordinate cord2)
         {
-            return cord1.X == cord2.X && cord1.Y == cord2.Y;
+            return ((cord1.X == cord2.X) && (cord1.Y == cord2.Y));
         }
 
         public static bool operator !=(Coordinate cord1, Coordinate cord2)
